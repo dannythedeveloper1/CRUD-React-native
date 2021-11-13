@@ -13,8 +13,9 @@ export default function App() {
     { id: uuid(), text: "Bread" },
     { id: uuid(), text: "Juice" },
   ]);
+  const [text, setText] = useState("");
 
-  const addItem = (text) => {
+  const addItem = () => {
     console.log(text);
     if (!text) {
       alert('please enter an item');
@@ -22,6 +23,13 @@ export default function App() {
     } else {
       setItems([{ id: uuid(), text }, ...items]);
     }
+    setText("");
+  }
+
+  const editItem = (id) => {
+    const newItem = items.filter(item => (item.id === id));
+    newItem[0].text = text;
+    setText("");
   }
 
   const deleteItem = (id) => {
@@ -32,9 +40,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header title='Shopping List' />
-      <AddItem addItem={addItem} />
+      <AddItem addItem={addItem} setText={setText} text={text} />
       <FlatList data={items}
-        renderItem={({ item }) => <ListItem item={item} deleteItem={deleteItem} />}
+        renderItem={({ item }) => <ListItem item={item} deleteItem={deleteItem} editItem={editItem} />}
       />
       <StatusBar style="auto" />
     </View>
